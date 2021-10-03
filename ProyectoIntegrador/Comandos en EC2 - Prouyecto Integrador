@@ -1,0 +1,71 @@
+Comandos en EC2 - Prouyecto Integrador
+--------------------------------------
+
+
+
+eksctl create cluster \
+--name eks-mundos-e \
+--region us-east-1 \
+--node-type t2.small \
+--with-oidc \
+--ssh-access \
+--ssh-public-key Proyecto_ME \
+--managed \
+--full-ecr-access
+--zones us-east-1a,us-east-1b,us-east-1c
+
+
+
+
+aws eks --region $(terraform output -raw region) update-kubeconfig --name $(terraform output -raw cluster_name)
+
+
+kubectl apply -f ado-admin-service-account.yaml
+
+
+
+
+ado-token-mvpg
+
+
+
+kubectl get secret ado-token-mvpgf -n kube-system -o json
+
+
+
+
+
+
+ubuntu@ip-172-31-91-73:~/Files$ kubectl get secret ado-token-mvpgf -n kube-system -o json
+{
+    "apiVersion": "v1",
+    "data": {
+        "ca.crt": "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUM1ekNDQWMrZ0F3SUJBZ0lCQURBTkJna3Foa2lHOXcwQkFRc0ZBREFWTVJNd0VRWURWUVFERXdwcmRXSmwKY201bGRHVnpNQjRYRFRJeE1UQXdNekU0TkRZd01Wb1hEVE14TVRBd01URTRORFl3TVZvd0ZURVRNQkVHQTFVRQpBeE1LYTNWaVpYSnVaWFJsY3pDQ0FTSXdEUVlKS29aSWh2Y05BUUVCQlFBRGdnRVBBRENDQVFvQ2dnRUJBTGJmClVLOWwwV0F0ZnI0K2QwbzZOV1c0eGp6dmNUYWlQWG00N0h4NVptQjl5MFJ0S1ZRbWRrU2dqTEtQYUVhbDRQLzIKTVFsVzhteGhJUVo0a2Z5TXFKSTFTQlh0bEZKU3VpT1lsOG9sSkNhZVU3TSt0WGdJSnNCa0lNME42dyt1ajVlTQpjVks2eGxmZVdmUzZMTzFaTXY0NkVSRGcxSWZVM3NQYnVmZEQwUUp3b1Z2TklQZUk5UVpoQVk5TDZXclVKUTE5CmFZemdyZHYrTGFMUmc3U2xtM3BVb2JMYzRDanpBRG1Zcnl5ek1pYVJDYlQxeWtoWDhGcTJpMjZ2TU5nK0xJemcKL1lPbXpkdjBwaVBlMS94bXRjdnR3N3ViMEpxZ1ZBNk9PaFIrZHhUaUVmb01reWF6L3NsbFpVY0hSUENaSEJqZQp6MDdZYkxET1BpWkxyY0duVlVrQ0F3RUFBYU5DTUVBd0RnWURWUjBQQVFIL0JBUURBZ0trTUE4R0ExVWRFd0VCCi93UUZNQU1CQWY4d0hRWURWUjBPQkJZRUZLRXQyODRhc25saEJ1MVZjK3FiOXJKOU91TEFNQTBHQ1NxR1NJYjMKRFFFQkN3VUFBNElCQVFBcHk4YWQrdVZJcW9iQitRVEFMd3NwYUwzYzN2YzRGN05jUU1BeWdGYlV2dVRIbEJ6aAowNG16Yi82UWMxM0lDb2JlNWljV2FBNU5FUDJueEF3K2s0Q1AyMEM3Uy8vYlp0b2doWGhIdEJ0VWI1dUdBUkV2Cjk5OE4zZzlNU0ZvL003eldNdmxCdTBXbExJa2JpTTFPUGdhZXZMbTVvQm5HS2tGQWtlMnBLOWtvSDlWMGtNRTkKZklsaFJLZm9kaXZiODJmSXpidkNrV0pidVlQbTk0TmgzUDIrRHVKYWNnKy91VExlTkFFNSthUkdUQkcrV0VaaQpYVURhUW1SbmEzbmlRVys3VWxQdCtqMFJORVExM0N6Z0d3aDYvM2tFaVBFcnJMNDBQMmlwR3dsNTQ1U0E2Z0k2Cmppb0Q0Mk8yV1hxV2xZeko5WXhPQTJ5VGd0YnFzamtncmFxSwotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==",
+        "namespace": "a3ViZS1zeXN0ZW0=",
+        "token": "ZXlKaGJHY2lPaUpTVXpJMU5pSXNJbXRwWkNJNklqTktOalo0TUZwVFFuQjFlVXhPVTFGTmMwMDFZbVp1YldkS05WWTVWR2hzZGxoVVJYY3pSR05OVUZraWZRLmV5SnBjM01pT2lKcmRXSmxjbTVsZEdWekwzTmxjblpwWTJWaFkyTnZkVzUwSWl3aWEzVmlaWEp1WlhSbGN5NXBieTl6WlhKMmFXTmxZV05qYjNWdWRDOXVZVzFsYzNCaFkyVWlPaUpyZFdKbExYTjVjM1JsYlNJc0ltdDFZbVZ5Ym1WMFpYTXVhVzh2YzJWeWRtbGpaV0ZqWTI5MWJuUXZjMlZqY21WMExtNWhiV1VpT2lKaFpHOHRkRzlyWlc0dGJYWndaMllpTENKcmRXSmxjbTVsZEdWekxtbHZMM05sY25acFkyVmhZMk52ZFc1MEwzTmxjblpwWTJVdFlXTmpiM1Z1ZEM1dVlXMWxJam9pWVdSdklpd2lhM1ZpWlhKdVpYUmxjeTVwYnk5elpYSjJhV05sWVdOamIzVnVkQzl6WlhKMmFXTmxMV0ZqWTI5MWJuUXVkV2xrSWpvaVptSTJNR05qTVdJdFlqbGxPQzAwT1dJNExXRTVPVFF0T1dKak1qa3hPR1JpWXpabElpd2ljM1ZpSWpvaWMzbHpkR1Z0T25ObGNuWnBZMlZoWTJOdmRXNTBPbXQxWW1VdGMzbHpkR1Z0T21Ga2J5SjkuclBYY3AxODFGa09rU1lWZ055Qzhfb2R4Y1U3ZnZKVEd3Tk9ZdDZ4Xy15bE9MQ2NreDNtVkxob2FLWjMyRUo2WGZ4N0RqODEyVGMzMWNBUFFKbzRKQlhvZFo2dS1UOEpoSTdfUHp5eTdYMzVnUEpHX0lfa0ZPb2FQSDZudUl5N3JVRGJsU0tsRUlDWF9qQm9SanNmV1ZKeG1OVkw3UW8yTDhSSU53MjFOa0l1SkNYcHhrcjFwZFdFTU9Ecng1elA2YmdXSmVLSzNwcFc2b0pRVUIxTTFjRTMtOW1hbWdrVjYxRDFwbDBFUnFQbVAzb0NxUEYzY0h2OUNjUlpRS1QyM3A5XzZCQm43N21jWE1VQS1oVnk0WFMwajFjNHNLcnJGMmJJV2lYSXhyYUlsUVF3U0R1UGdjMVBBNk1VVkc2Rlg3Z1dHZnFfY0pBVXpneTlZM1lhX2FB"
+    },
+    "kind": "Secret",
+    "metadata": {
+        "annotations": {
+            "kubernetes.io/service-account.name": "ado",
+            "kubernetes.io/service-account.uid": "fb60cc1b-b9e8-49b8-a994-9bc2918dbc6e"
+        },
+        "creationTimestamp": "2021-10-03T18:58:32Z",
+        "name": "ado-token-mvpgf",
+        "namespace": "kube-system",
+        "resourceVersion": "1659",
+        "uid": "77ceda92-9c09-4c3b-ab09-8cf6b35e7c9d"
+    },
+    "type": "kubernetes.io/service-account-token"
+}
+
+
+
+kubectl cluster-info | grep -E 'Kubernetes master|Kubernetes control plane' | awk '/http/ {print $NF}'
+
+
+
+https://D15F6ECB6156E34EB4A523BFA0BEE74F.gr7.us-east-2.eks.amazonaws.com
+
+
+
